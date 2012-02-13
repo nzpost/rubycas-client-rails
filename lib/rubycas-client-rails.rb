@@ -296,14 +296,17 @@ module RubyCAS
 
           log.debug "Intercepted single-sign-out request for CAS session #{si.inspect}."
 
-          begin
-            required_sess_store = ActiveRecord::SessionStore
-            current_sess_store  = Rails.application.config.session_store
-          rescue NameError
-            # for older versions of Rails (prior to 2.3)
-            required_sess_store = CGI::Session::ActiveRecordStore
-            current_sess_store  = ActionController::Base.session_options[:database_manager]
-          end
+          # Rails 2.3
+          ##required_sess_store = ActiveRecord::SessionStore
+          ##current_sess_store  = ActionController::Base.session_store
+
+          # Rails 2.2
+          ## required_sess_store = CGI::Session::ActiveRecordStore
+          ## current_sess_store  = ActionController::Base.session_options[:database_manager]
+
+          # Rails 3.0
+          required_sess_store = ActiveRecord::SessionStore
+          current_sess_store  = ::Rails.application.config.session_store
 
           if current_sess_store == required_sess_store
             session_id = read_service_session_lookup(si)
