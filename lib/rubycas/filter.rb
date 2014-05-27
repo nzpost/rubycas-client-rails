@@ -11,11 +11,11 @@ module RubyCAS
     @@fake_extra_attributes = nil
 
     class << self
-      def setup(config)
-        @@config = config
+      def setup(supplied_config)
+        @@config = supplied_config
         @@config[:logger] ||= Rails.logger
-        @@client = CASClient::Client.new(@@config)
-        @@log = @@client.log
+        @@client = CASClient::Client.new(config)
+        @@log = client.log
       end
 
       def filter(controller)
@@ -156,15 +156,14 @@ module RubyCAS
       end
 
       def use_gatewaying?
-        @@config[:use_gatewaying]
+        config[:use_gatewaying]
       end
 
       # Returns the login URL for the current controller.
       # Useful when you want to provide a "Login" link in a GatewayFilter'ed
       # action.
       def login_url(controller)
-        service_url = read_service_url(controller)
-        url = client.add_service_to_login_url(service_url)
+        url = client.add_service_to_login_url(read_service_url(controller))
         log.debug("Generated login url: #{url}")
         return url
       end
@@ -194,7 +193,7 @@ module RubyCAS
       #   end
       # end
       def login_to_service(controller, credentials, return_path)
-        resp = @@client.login_to_service(credentials, return_path)
+        resp = client.login_to_service(credentials, return_path)
         if resp.is_failure?
           log.info("Validation failed for service #{return_path.inspect} reason: '#{resp.failure_message}'")
         else
