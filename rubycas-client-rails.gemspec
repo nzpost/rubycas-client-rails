@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{rubycas-client-rails}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.authors = ["Matt Zukowski"]
   s.date = %q{2011-08-13}
@@ -13,6 +13,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{rubycas-client}
 
-  s.add_dependency('rails', '>= 3.0.0')
-  s.add_dependency('rubycas-client', '>= 2.2.0')
+  s.add_development_dependency 'rails', '>= 4.0.0'
+  s.add_development_dependency 'rubycas-client', '>= 2.2.0'
 end
